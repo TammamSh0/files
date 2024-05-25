@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truck Loading and TSP Solver</title>
+</head>
+<body>
+    <h1>Truck Loading and TSP Solver</h1>
+    <form action="{% url 'solve' %}" method="post">
+        {% csrf_token %}
+        <h2>Truck and Goods Information</h2>
+        <label for="num_trucks">Number of Trucks:</label>
+        <input type="number" id="num_trucks" name="num_trucks" required><br><br>
+        
+        <div id="trucks">
+            <!-- سيتم إضافة الحقول هنا باستخدام جافاسكريبت -->
+        </div>
+        
+        <input type="submit" value="Solve">
+    </form>
+
+    <script>
+        document.getElementById('num_trucks').addEventListener('input', function() {
+            const numTrucks = this.value;
+            const trucksDiv = document.getElementById('trucks');
+            trucksDiv.innerHTML = '';
+            for (let i = 0; i < numTrucks; i++) {
+                trucksDiv.innerHTML += `<h3>Truck ${i + 1}</h3>
+                                        <label for="truck_capacity_${i}">Capacity:</label>
+                                        <input type="number" id="truck_capacity_${i}" name="truck_capacity_${i}" required><br><br>
+                                        <label for="num_goods_${i}">Number of Goods:</label>
+                                        <input type="number" id="num_goods_${i}" name="num_goods_${i}" required><br><br>
+                                        <div id="goods_${i}"></div>
+                                        <label for="num_addresses_${i}">Number of Addresses:</label>
+                                        <input type="number" id="num_addresses_${i}" name="num_addresses_${i}" required><br><br>
+                                        <div id="addresses_${i}"></div>`;
+            }
+            for (let i = 0; i < numTrucks; i++) {
+                document.getElementById(`num_goods_${i}`).addEventListener('input', function() {
+                    const numGoods = this.value;
+                    const goodsDiv = document.getElementById(`goods_${i}`);
+                    goodsDiv.innerHTML = '';
+                    for (let j = 0; j < numGoods; j++) {
+                        goodsDiv.innerHTML += `<h4>Good ${j + 1}</h4>
+                                               <label for="good_value_${i}_${j}">Value:</label>
+                                               <input type="number" id="good_value_${i}_${j}" name="good_value_${i}_${j}" required><br>
+                                               <label for="good_weight_${i}_${j}">Weight:</label>
+                                               <input type="number" id="good_weight_${i}_${j}" name="good_weight_${i}_${j}" required><br><br>`;
+                    }
+
+                });
+                document.getElementById(`num_addresses_${i}`).addEventListener('input', function() {
+                    const numAddresses = this.value;
+                    const addressesDiv = document.getElementById(`addresses_${i}`);
+                    addressesDiv.innerHTML = '';
+                    for (let a = 0; a < numAddresses; a++) {
+                        for (let b = 0; b < numAddresses; b++) {
+                            if (a != b) {
+                                addressesDiv.innerHTML += `<label for="time_${i}_${a}_${b}">Time from Address ${a + 1} to Address ${b + 1}:</label>
+                                                           <input type="number" id="time_${i}_${a}_${b}" name="time_${i}_${a}_${b}" required><br>`;
+                            }
+                        }
+                        addressesDiv.innerHTML += `<br>`;
+                    }
+                });
+            
+            }
+         } );
+            
+        
+
+
+        
+    </script>
+</body>
+</html>

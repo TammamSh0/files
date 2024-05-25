@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>Optimal Solution</h1>
+    <h2>Truck Loading</h2>
+    {% for truck in trucks %}
+        <h3>Truck {{ forloop.counter }}</h3>
+        <p>Optimal Value: {{ truck.optimal_value }}</p>
+        <p>Selected Goods:</p>
+        <ul>
+            {% for value, weight in truck.selected_goods %}
+                <li>Value: {{ value }}, Weight: {{ weight }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <h2>Shortest Path</h2>
+    {% for path_info in paths %}
+        <h3>Truck {{ forloop.counter }}</h3>
+        <p>Path: {{ path_info.path }}</p>
+        <p>Shortest Distance: {{ path_info.distance }}</p>
+    {% endfor %}
+
+    <a href="{% url 'index' %}">Go Back</a>
+</body>
+</html>
